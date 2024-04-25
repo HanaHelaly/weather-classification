@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Image Classifier</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="clouds">
+        <div class="clouds-1"></div>
+        <div class="clouds-2"></div>
+        <div class="clouds-3"></div>
+    </div>
+    <div class="container mt-5">
+        <!-- Add vertical space above the title -->
+        <h1 class="text-center white-title">Weather Image Classifier</h1>
+    </div>
+
+    {% if uploaded_image %}
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <h4 class="text-center white-title">Uploaded Image</h4>
+                    <img src="data:image/jpeg;base64,{{ uploaded_image }}" class="img-fluid mx-auto d-block mt-3" style="max-width: 600px;">
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form action='/predict' method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="imageInput" class="form-label white-title">Choose an image file:</label>
+                        <input class="form-control" id="imageInput" type="file" name="image">
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-outline-light btn-lg white-title" type="submit">Predict Image</button>
+                    </div>
+                </form>
+
+                {% if prediction %}
+                    <div class="mt-4">
+                        <h2 class="text-center white-title">Predicted class: {{ prediction }}</h2>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
