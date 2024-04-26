@@ -28,7 +28,7 @@ labels = {
 url = 'https://drive.google.com/uc?id=15sGlZvK-TcuSMqIvgT4OdguXC6aocMYr'
 makedirs('model', exist_ok=True)
 destination = 'model/model.h5'
-gdown.download(url, destination, quiet=False,)
+#gdown.download(url, destination, quiet=False,)
 
 app = Flask(__name__)
 
