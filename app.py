@@ -20,20 +20,13 @@ labels = {0: 'dew',
 
 # Initialize Flask application
 app = Flask(__name__)
-
-# Load the weights from the h5 file
-model = load_model('./model/FINAL_EfficientNetB7-201.h5')
 allowed_extensions = ['.jpg', '.jpeg', '.png']
 def preprocess_image(image):
-    # Load the image with target size of (380, 380), required by EfficientNetB4
-    image = image.resize((224, 224))
-    # Convert the image to a numpy array
-    image = img_to_array(image)
-    # Expand the dimensions to create a batch of size 1
-    image = np.expand_dims(image, axis=0)
+    # image = image.resize((224, 224))
     # Rescale the image pixels
-    image = image/255.
-    return image
+    image = img_to_array(image)/255.
+    # Expand the dimensions to create a batch of size 1
+    return np.expand_dims(image, axis=0)
 
 # Define route for home page
 @app.route('/')
@@ -51,6 +44,7 @@ def predict():
         return render_template('index.html', prediction=f'Error: Only {allowed_extensions_str} files are allowed')
 
     try:
+        model = load_model('./model/FINAL_EfficientNetB7-201.h5')
         # Read the image file into memory
         image_stream = file.stream
         # Load the image from the stream
@@ -58,9 +52,7 @@ def predict():
         # Preprocess the image
         image = preprocess_image(image)
         # Make predictions
-        predictions = model.predict(image)
-        predicted_class = np.argmax(predictions)
-
+        predicted_class = np.argmax(model.predict(image))
         # Convert image to base64 string
         buffered = BytesIO()
         array_to_img(image[0]).save(buffered, format="JPEG")
