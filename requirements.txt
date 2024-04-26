@@ -15,4 +15,5 @@ python-dateutil==2.9.0.post0
 requests==2.31.0
 gdown==5.1.0
 Werkzeug==3.0.2
-tensorflow
+tensorflow~=2.16.1
+streamlit~=1.33.0
