@@ -1,13 +1,12 @@
 from flask import Flask, render_template, request
-import base64
+from base64 import b64encode
 from tensorflow.keras.preprocessing.image import load_img, img_to_array, array_to_img
 from tensorflow.keras.models import load_model
 import numpy as np
 from io import BytesIO
 from PIL import UnidentifiedImageError
-import pygame
 import gdown
-import os
+from os import makedirs
 
 
 # pygame.mixer.init()
@@ -27,7 +26,7 @@ labels = {
     10: 'snow'
 }
 url = 'https://drive.google.com/uc?id=15sGlZvK-TcuSMqIvgT4OdguXC6aocMYr'
-os.makedirs('model', exist_ok=True)
+makedirs('model', exist_ok=True)
 destination = 'model/model.h5'
 gdown.download(url, destination, quiet=False,)
 
@@ -72,7 +71,7 @@ def predict():
             predicted_class = np.argmax(model.predict(image))
             buffered = BytesIO()
             array_to_img(image[0]).save(buffered, format="JPEG")
-            image_data = base64.b64encode(buffered.getvalue()).decode("utf-8")
+            image_data = b64encode(buffered.getvalue()).decode("utf-8")
             return render_template('index.html', prediction=labels[predicted_class].capitalize(), uploaded_image=image_data)
         except UnidentifiedImageError as e:
             return render_template('index.html', prediction=f'Error: Unable to identify the image file. {e}')
