@@ -39,7 +39,7 @@ app = Flask(__name__)
 # allowed_extensions = ['.jpg', '.jpeg', '.png']
 
 # Load the model once during application startup
-# model = load_model(destination)
+model = load_model(destination)
 
 def preprocess_image(image):
     image = img_to_array(image) / 255.
@@ -68,7 +68,7 @@ def predict():
 
         try:
             image = preprocess_image(image)
-            predicted_class = np.argmax(load_model(destination).predict(image))
+            predicted_class = np.argmax(model.predict(image))
             buffered = BytesIO()
             array_to_img(image[0]).save(buffered, format="JPEG")
             image_data = b64encode(buffered.getvalue()).decode("utf-8")
