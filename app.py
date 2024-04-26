@@ -24,7 +24,7 @@ app = Flask(__name__)
 allowed_extensions = ['.jpg', '.jpeg', '.png']
 
 # Load the model once during application startup
-model = load_model('./model/FINAL_EfficientNetB7-201.h5')
+model = load_model('./model/densenet-121.h5')
 
 def preprocess_image(image):
     image = img_to_array(image) / 255.
