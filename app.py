@@ -28,7 +28,7 @@ labels = {
 url = 'https://drive.google.com/uc?id=15sGlZvK-TcuSMqIvgT4OdguXC6aocMYr'
 makedirs('model', exist_ok=True)
 destination = 'model/model.h5'
-#gdown.download(url, destination, quiet=False,)
+gdown.download(url, destination, quiet=False,)
 
 app = Flask(__name__)
 
@@ -36,10 +36,10 @@ app = Flask(__name__)
 
 
 
-allowed_extensions = ['.jpg', '.jpeg', '.png']
+# allowed_extensions = ['.jpg', '.jpeg', '.png']
 
 # Load the model once during application startup
-model = load_model(destination)
+# model = load_model(destination)
 
 def preprocess_image(image):
     image = img_to_array(image) / 255.
@@ -57,8 +57,8 @@ def index():
 def predict():
     try:
         file = request.files['image']
-        if not any(file.filename.lower().endswith(ext) for ext in allowed_extensions):
-            allowed_extensions_str = ', '.join(allowed_extensions)
+        if not any(file.filename.lower().endswith(ext) for ext in ['.jpg', '.jpeg', '.png']):
+            allowed_extensions_str = ', '.join(['.jpg', '.jpeg', '.png'])
             return render_template('index.html', prediction=f'Error: Only {allowed_extensions_str} files are allowed')
 
         image_stream = file.stream
@@ -68,7 +68,7 @@ def predict():
 
         try:
             image = preprocess_image(image)
-            predicted_class = np.argmax(model.predict(image))
+            predicted_class = np.argmax(load_model(destination).predict(image))
             buffered = BytesIO()
             array_to_img(image[0]).save(buffered, format="JPEG")
             image_data = b64encode(buffered.getvalue()).decode("utf-8")
