@@ -9,10 +9,10 @@ import pygame
 import gdown
 import os
 
-pygame.mixer.init()
-pygame.mixer.music.load("sound/notification.mp3")
-pygame.mixer.music.play(5)
 
+# pygame.mixer.init()
+# pygame.mixer.music.load("sound/notification.mp3")
+# pygame.mixer.music.play(5)
 labels = {
     0: 'dew',
     1: 'fog smog',
