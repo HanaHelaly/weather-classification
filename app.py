@@ -9,6 +9,10 @@ import pygame
 import gdown
 import os
 
+pygame.mixer.init()
+pygame.mixer.music.load("sound/notification.mp3")
+pygame.mixer.music.play(5)
+
 labels = {
     0: 'dew',
     1: 'fog smog',
@@ -29,8 +33,6 @@ gdown.download(url, destination, quiet=False,)
 
 app = Flask(__name__)
 
-pygame.mixer.init()
-pygame.mixer.music.load("sound/notification.mp3")
 
 
 
@@ -40,7 +42,6 @@ allowed_extensions = ['.jpg', '.jpeg', '.png']
 # Load the model once during application startup
 model = load_model(destination)
 
-pygame.mixer.music.play(5)
 def preprocess_image(image):
     image = img_to_array(image) / 255.
     return np.expand_dims(image, axis=0)
