@@ -6,6 +6,7 @@ import numpy as np
 from io import BytesIO
 from PIL import UnidentifiedImageError
 
+
 labels = {0: 'dew',
  1: 'fog smog',
  2: 'frost',
@@ -17,14 +18,16 @@ labels = {0: 'dew',
  8: 'rime',
  9: 'sandstorm',
  10: 'snow'}
-
 # Initialize Flask application
 app = Flask(__name__)
 allowed_extensions = ['.jpg', '.jpeg', '.png']
+
+# Load the model once during application startup
+model = load_model('./model/FINAL_EfficientNetB7-201.h5')
+
 def preprocess_image(image):
-    # image = image.resize((224, 224))
     # Rescale the image pixels
-    image = img_to_array(image)/255.
+    image = img_to_array(image) / 255.
     # Expand the dimensions to create a batch of size 1
     return np.expand_dims(image, axis=0)
 
@@ -44,7 +47,6 @@ def predict():
         return render_template('index.html', prediction=f'Error: Only {allowed_extensions_str} files are allowed')
 
     try:
-        model = load_model('./model/FINAL_EfficientNetB7-201.h5')
         # Read the image file into memory
         image_stream = file.stream
         # Load the image from the stream
@@ -62,7 +64,6 @@ def predict():
         return render_template('index.html', prediction=(labels[predicted_class]).capitalize(), uploaded_image=image_data)
     except UnidentifiedImageError as e:
         return render_template('index.html', prediction=f'Error: Unable to identify the image file. {e}')
-
 
 if __name__ == '__main__':
     app.run(debug=True)
