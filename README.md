@@ -3,7 +3,7 @@
 ## Overview
 This project implements a web-app weather recognition classifier using deep learning with EfficientNetB4 architecture. The classifier is trained to classify images into 11 weather classes, including hail, snow, glaze, lightning, fog smog, frost, dew , rain, rainbow, rime, and sandstorm.
 
-## Dataset
+## Dataset    
 The classifier is trained on the [Weather Dataset](https://www.kaggle.com/datasets/jehanbhathena/weather-dataset) available on Kaggle. This dataset contains labeled images representing various weather conditions.
 
 ## Model Architecture
